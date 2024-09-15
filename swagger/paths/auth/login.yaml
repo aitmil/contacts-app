@@ -1,0 +1,48 @@
+tags:
+  - Auth
+summary: Login user
+operationId: loginUser
+description: 'User logging in'
+security: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            description: "User's email"
+            type: string
+            example: janesmith@example.com
+          password:
+            description: "User's password, must be from 8 to 16 characters"
+            type: string
+            example: 012ghftR
+responses:
+  '200':
+    description: User successfully logged in
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully logged in an user!
+            data:
+              type: object
+              $ref: ..\..\components\schemas\session.yaml
+  '400':
+    $ref: ..\..\components\responses\400.yaml
+  '401':
+    $ref: ..\..\components\responses\401.yaml

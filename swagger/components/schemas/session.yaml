@@ -1,0 +1,8 @@
+type: object
+required:
+  - accessToken
+properties:
+  accessToken:
+    description: 'Current session access token, valid 15min'
+    type: string
+    example: 1dU+uOrhvBRlgJpO6shwNGbZdh5kiIWTh545vtaB

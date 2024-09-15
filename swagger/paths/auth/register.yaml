@@ -1,0 +1,53 @@
+tags:
+  - Auth
+summary: Register user
+operationId: registerUser
+description: 'Register new user'
+security: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - name
+          - email
+          - password
+        properties:
+          name:
+            description: "User's name, must be from 3 to 20 characters"
+            type: string
+            example: 'Jane Smith'
+          email:
+            description: "User's email"
+            type: string
+            example: janesmith@example.com
+          password:
+            description: "User's password, must be from 8 to 16 characters"
+            type: string
+            example: 012ghftR
+responses:
+  '201':
+    description: Creates a user
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully registered a user!
+            data:
+              type: object
+              $ref: ..\..\components\schemas\user.yaml
+  '400':
+    $ref: ..\..\components\responses\400.yaml
+  '409':
+    $ref: ..\..\components\responses\409.yaml

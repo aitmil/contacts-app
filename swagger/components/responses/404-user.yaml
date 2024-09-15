@@ -1,0 +1,19 @@
+description: User not found
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: User with id 66995563aac8191253f0bfd8 not found
+        data:
+          type: object
+          example: {}
