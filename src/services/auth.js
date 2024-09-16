@@ -25,7 +25,16 @@ export const registerUser = async (user) => {
 
   user.password = await bcrypt.hash(user.password, 10);
 
-  return await UsersCollection.create(user);
+  const newUser = await UsersCollection.create(user);
+
+  const newSession = createSession();
+
+  const session = await SessionsCollection.create({
+    userId: newUser._id,
+    ...newSession,
+  });
+
+  return [newUser, session];
 };
 
 export const loginUser = async (email, password) => {
@@ -39,11 +48,6 @@ export const loginUser = async (email, password) => {
 
   const newSession = createSession();
 
-  console.log('New session:', newSession);
-
-  console.log('ACCESS_TOKEN_TTL:', ACCESS_TOKEN_TTL);
-  console.log('REFRESH_TOKEN_TTL:', REFRESH_TOKEN_TTL);
-
   await SessionsCollection.deleteOne({ userId: maybeUser._id });
 
   const session = await SessionsCollection.create({
@@ -51,8 +55,7 @@ export const loginUser = async (email, password) => {
     ...newSession,
   });
 
-  console.log('Created session:', session);
-  return session;
+  return [maybeUser, session];
 };
 
 export const refreshUserSession = async ({ sessionId, refreshToken }) => {

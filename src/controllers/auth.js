@@ -7,26 +7,34 @@ export const registerUser = async (req, res) => {
     password: req.body.password,
   };
 
-  const registeredUser = await AuthService.registerUser(user);
+  const [registeredUser, session] = await AuthService.registerUser(user);
+
+  setupSession(res, session);
 
   res.status(201).json({
     status: 201,
     message: 'Successfully registered a user!',
-    data: registeredUser,
+    data: {
+      user: registeredUser,
+      accessToken: session.accessToken,
+    },
   });
 };
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  const session = await AuthService.loginUser(email, password);
+  const [maybeUser, session] = await AuthService.loginUser(email, password);
 
   setupSession(res, session);
 
   res.status(200).json({
     status: 200,
     message: 'Successfully logged in an user!',
-    data: { accessToken: session.accessToken },
+    data: {
+      user: maybeUser,
+      accessToken: session.accessToken,
+    },
   });
 };
 
