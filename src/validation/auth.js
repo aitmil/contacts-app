@@ -11,7 +11,7 @@ export const registerUserSchema = Joi.object({
   password: Joi.string()
     .min(8)
     .max(16)
-    .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+    .pattern(/^[a-zA-Z0-9]+$/)
     .required(),
 });
 
@@ -25,7 +25,7 @@ export const loginUserSchema = Joi.object({
   password: Joi.string()
     .min(8)
     .max(16)
-    .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+    .pattern(/^[a-zA-Z0-9]+$/)
     .required(),
 });
 
@@ -42,7 +42,7 @@ export const resetPwdSchema = Joi.object({
   password: Joi.string()
     .min(8)
     .max(16)
-    .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+    .pattern(/^[a-zA-Z0-9]+$/)
     .required(),
   token: Joi.string().required(),
 });
