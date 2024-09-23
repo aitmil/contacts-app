@@ -92,10 +92,14 @@ function setupSession(res, session) {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     expires: session.refreshTokenValidUntil,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Lax',
   });
 
   res.cookie('sessionId', session._id, {
     httpOnly: true,
     expires: session.refreshTokenValidUntil,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Lax',
   });
 }

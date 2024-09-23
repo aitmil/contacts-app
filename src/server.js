@@ -19,7 +19,14 @@ if (isNaN(PORT)) {
 export const setupServer = () => {
   const app = express();
 
-  app.use(cors());
+  app.use(
+    cors({
+      origin: 'http://localhost:5173', //TODO: change url
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }),
+  );
+
   app.use(cookieParser());
 
   app.use(
