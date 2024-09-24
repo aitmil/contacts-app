@@ -38,18 +38,38 @@ export const loginUser = async (req, res) => {
   });
 };
 
+// export const refreshUserSession = async (req, res) => {
+//   const session = await AuthService.refreshUserSession({
+//     sessionId: req.cookies.sessionId,
+//     refreshToken: req.cookies.refreshToken,
+//   });
+
+//   setupSession(res, session);
+
+//   res.status(200).json({
+//     status: 200,
+//     message: 'Successfully refreshed a session!',
+//     data: { accessToken: session.accessToken },
+//   });
+// };
+
 export const refreshUserSession = async (req, res) => {
   const session = await AuthService.refreshUserSession({
     sessionId: req.cookies.sessionId,
     refreshToken: req.cookies.refreshToken,
   });
 
+  const user = await AuthService.getUserBySessionId(session._id);
+
   setupSession(res, session);
 
   res.status(200).json({
     status: 200,
     message: 'Successfully refreshed a session!',
-    data: { accessToken: session.accessToken },
+    data: {
+      user,
+      accessToken: session.accessToken,
+    },
   });
 };
 

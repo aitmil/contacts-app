@@ -74,12 +74,18 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
 
   const newSession = createSession();
 
-  await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
+  const updatedSession = await SessionsCollection.findByIdAndUpdate(
+    sessionId,
+    {
+      accessToken: newSession.accessToken,
+      accessTokenValidUntil: newSession.accessTokenValidUntil,
+      refreshToken: newSession.refreshToken,
+      refreshTokenValidUntil: newSession.refreshTokenValidUntil,
+    },
+    { new: true },
+  );
 
-  return await SessionsCollection.create({
-    userId: session.userId,
-    ...newSession,
-  });
+  return updatedSession;
 };
 
 export const logoutUser = (sessionId) => {
@@ -149,6 +155,13 @@ export const resetPwd = async (password, token) => {
     }
     throw err;
   }
+};
+
+export const getUserBySessionId = async (sessionId) => {
+  const session = await SessionsCollection.findById(sessionId);
+  const user = await UsersCollection.findById(session.userId);
+  if (!user) throw createHttpError(404, 'User not found');
+  return user;
 };
 
 // -----------------------------------------------
